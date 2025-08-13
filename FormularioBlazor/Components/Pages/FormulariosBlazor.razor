@@ -1,0 +1,132 @@
+﻿@page "/productos"
+
+<h1>Formularios Blazor</h1>
+
+<EditForm Model="producto" OnValidSubmit="@GuardarProducto">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <!--Nombre del producto-->
+                <div class="form-group">
+                    <label for="nombre">Nombre del Producto</label>
+                    <InputText id="nombre" @bind-Value="producto.Nombre" class="form-control" placeholder="Ingrese el Nombre"></InputText>
+                </div>
+                <!--Descripcion-->
+                <div class="form-group">
+                    <label for="descripcion">Descripcion</label>
+                    <InputTextArea id="descripcion" @bind-Value="producto.Descripcion" class="form-control" placeholder="Ingrese la Descripcion"></InputTextArea>
+                </div>
+
+                <!--Precio-->
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    <InputNumber id="precio" @bind-Value="producto.Precio" class="form-control"></InputNumber>
+                </div>
+
+                <!--Cantidad de Stock-->
+                <div class="form-group">
+                    <label for="cantidad">Cantidad</label>
+                    <InputNumber id="cantidad" @bind-Value="producto.CantidadStock" class="form-control"></InputNumber>
+                </div>
+
+                <!--Fecha de lanzamiento-->
+                <div class="form-group">
+                    <label for="fecha">Fecha de lanzamiento</label>
+                    <InputDate id="fecha" @bind-Value="producto.FechaLanzamiento" class="form-control"></InputDate>
+                </div>
+
+                <!--Categoria-->
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <InputSelect id="categoria" @bind-Value="producto.Categoria" class="form-control">
+                        <option value="">Selecionar una categoria</option>
+                        <option value="Electronica">Electronica</option>
+                        <option value="Ropa">Ropa</option>
+                        <option value="Hogar">Hogar</option>
+                    </InputSelect>
+                </div>
+
+                <!-- Disponibilidad-->
+                <div class="form-group">
+                    <label for="disponible">Disponible</label>
+                    <InputCheckbox id="disponible" @bind-Value="producto.Disponible"/>
+                </div>
+
+                <!-- Subida de archivo-->
+                <div class="form-group">
+                    <label for="archivo">Subir Archivo (imagen)</label>
+                    <InputFile OnChange="SubirArchivo">
+                        @if (!string.IsNullOrEmpty(producto.NombreArchivo))
+                        {
+                            <p>Archivo cargado: @producto.NombreArchivo</p>
+                        }
+                    </InputFile>
+                </div>
+
+                <!-- Imagen-->
+                <div class="form-group">
+                    <label for="imagen">URL de la Imagen</label>
+                    <InputText id="imagen" @bind-Value="producto.ImagenUrl" class="form-control" placeholder="Ingrese la URL"></InputText>
+                </div>
+                
+                <br/>
+                <button type="submit" class="btn btn-primary">Guardar Productdo</button>
+            </div>
+        </div>
+        </div>
+</EditForm>
+
+
+
+
+@code {
+    private Producto producto = new Producto();
+    private IBrowserFile archivoSubido;
+    
+    private async Task SubirArchivo(InputFileChangeEventArgs e)
+    {
+        archivoSubido = e.File;
+        var buffer = new Byte[archivoSubido.Size];
+        await archivoSubido.OpenReadStream().ReadAsync(buffer);
+        //Guardar Archivo (Simulacion)
+        producto.NombreArchivo = archivoSubido.Name;
+    }
+    
+    private void GuardarProducto()
+    {
+        Console.WriteLine("Producto guardado con exito");
+    }
+    
+
+
+
+    public class Producto
+    {
+        [Required(ErrorMessage ="El nombre es obligatorio")]
+        public string Nombre { get; set; }
+        
+        public string Descripcion { get; set; }
+        
+        [Range(0.01, 9999.99, ErrorMessage ="El precio debe estar entre 0.01 y 9999.99")]
+        public decimal Precio { get; set; }
+        
+        [Range(0, 1000, ErrorMessage ="La cantidad en stock debe ser entre 0 y 1000")]
+        public int CantidadStock { get; set; }
+        
+        public DateTime FechaLanzamiento { get; set; }
+        
+        [Required(ErrorMessage ="Debe seleccionar una categoria")]
+        public string Categoria { get; set; }
+        
+        public bool Disponible { get; set; }
+        
+        [Url(ErrorMessage ="Debe proporcionar una url validad")]
+        public string ImagenUrl { get; set; }
+
+        public string NombreArchivo { get; set; }
+        
+    }
+}
