@@ -1,0 +1,154 @@
+.table-responsive[b-9i1rdteqc9] {
+    max-height: 70vh;
+}
+
+.calendar[b-9i1rdteqc9] {
+    table-layout: fixed;
+    user-select: none;
+}
+
+    .calendar th[b-9i1rdteqc9], .calendar td[b-9i1rdteqc9] {
+        min-width: 32px;
+        height: 28px;
+    }
+
+.sticky-col[b-9i1rdteqc9] {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+
+.sticky-head[b-9i1rdteqc9] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.calendar-cell[b-9i1rdteqc9] {
+    transition: outline .1s ease;
+}
+
+    .calendar-cell:hover[b-9i1rdteqc9] {
+        outline: 2px solid #999;
+    }
+
+
+    .calendar-cell.wknd[b-9i1rdteqc9] {
+        background: #f6f6f6;
+    }
+
+
+    .calendar-cell.vac[b-9i1rdteqc9] {
+        background: #ffe0e0;
+        border: 1px solid red;
+    }
+
+    .calendar-cell.sick[b-9i1rdteqc9] {
+        background: #e0f0ff;
+        border: 1px solid blue;
+    }
+
+    .calendar-cell.perm[b-9i1rdteqc9] {
+        background: #fff6cc;
+    }
+
+    .calendar-cell.other[b-9i1rdteqc9] {
+        background: #e9e9e9;
+    }
+
+
+    .calendar-cell.pending[b-9i1rdteqc9] {
+        outline: 2px dashed #888;
+    }
+
+    .calendar-cell.rejected[b-9i1rdteqc9] {
+        text-decoration: line-through;
+    }
+
+    .calendar-cell.holiday[b-9i1rdteqc9] {
+        background: #e9d5ff;
+        border: 1px solid violet;
+    }
+
+
+.legend[b-9i1rdteqc9] {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.legend-vac[b-9i1rdteqc9] {
+    background: #ffe0e0;
+    border: 1px solid red;
+}
+
+.legend-sick[b-9i1rdteqc9] {
+    background: #e0f0ff;
+    border: 1px solid blue;
+}
+
+.legend-perm[b-9i1rdteqc9] {
+    background: #fff6cc;
+    border: 1px solid yellow;
+}
+
+.legend-pend[b-9i1rdteqc9] {
+    border: 2px dashed #888;
+    padding: 2px 6px;
+}
+
+.legend-rej[b-9i1rdteqc9] {
+    text-decoration: line-through;
+    border: 1px solid
+}
+
+.legend-wknd[b-9i1rdteqc9] {
+    background: #f6f6f6;
+    border: 1px solid #f6f6f6;
+}
+
+/* violeta claro */
+.legend-holiday[b-9i1rdteqc9] {
+    background: #e9d5ff;
+    border: 1px solid violet;
+}
+
+.calendar-cell.vac[b-9i1rdteqc9] {
+    background: #ffe6b3;
+}
+/* Vacaciones */
+.calendar-cell.sick[b-9i1rdteqc9] {
+    background: #b3e0ff;
+}
+/* Enfermedad */
+.calendar-cell.perm[b-9i1rdteqc9] {
+    background: #fff6cc;
+}
+/* Permiso genérico */
+.calendar-cell.move[b-9i1rdteqc9] {
+    background: #e0ccff;
+}
+/* Día de mudanza */
+.calendar-cell.exam[b-9i1rdteqc9] {
+    background: #d6f5d6;
+}
+/* Estudio / examen */
+.calendar-cell.mater[b-9i1rdteqc9] {
+    background: #ffcccc;
+}
+/* Maternidad/paternidad */
+.calendar-cell.course[b-9i1rdteqc9] {
+    background: #cce5ff;
+}
+/* Capacitación */
+.calendar-cell.family[b-9i1rdteqc9] {
+    background: #f7d6e0;
+}
+/* Atención familiar */
+.calendar-cell.incap[b-9i1rdteqc9] {
+    background: #e6e6e6;
+}
+/* Incapacidad */
+.calendar-cell.don[b-9i1rdteqc9] {
+    background: #ffd9b3;
+} 

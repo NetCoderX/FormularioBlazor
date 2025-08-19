@@ -1,0 +1,362 @@
+﻿@page "/autogestion"
+@using System.Globalization
+@using Autogestion.Data
+@using System.Text.Json.Serialization
+@using System.Text.Json
+@inject BasContext _context
+
+<div class="container-fluid">
+    <h3 class="mb-3">Registro de Asistencia Mensual</h3>
+
+    
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <label class="form-label m-0">Mes</label>
+        <select class="form-select form-select-sm w-auto" @bind="month" @bind:after="OnMonthYearChanged">
+            @for (int m = 1; m <= 12; m++)
+            {
+                <option value="@m">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option>
+            }
+        </select>
+
+        
+        <label class="form-label m-0">Año</label>
+        <input class="form-control form-control-sm w-auto" type="number" @bind="year" @bind:after="OnMonthYearChanged" />
+    </div>
+
+    
+    <div class="row mb-3">
+        <div class="col-6 col-md-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="chkFinde" @bind="ShowWeekends" />
+                <label class="form-check-label" for="chkFinde">Fin de semanas</label>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="chkFeriados" @bind="ShowHolidays" />
+                <label class="form-check-label" for="chkFeriados">Feriados</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm align-middle calendar">
+            <thead class="table-light">
+                <tr>
+                    <th class="sticky-col">Empleado</th>
+                    @foreach (var dt in VisibleDates)
+                    {
+                        <th class="text-center sticky-head">
+                            @DowLetterEs(dt.DayOfWeek)
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (rows.Count == 0)
+                {
+                    <tr>
+                        <th class="sticky-col bg-white">(Sin empleado)</th>
+                        @foreach (var dt in VisibleDates)
+                        {
+                            <td class="calendar-cell">@dt.Day</td>
+                        }
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var r in rows)
+                    {
+                        <tr>
+                            <th class="sticky-col bg-white">@r.Empleado</th>
+                            @foreach (var dt in VisibleDates)
+                            {
+                                var day = dt.Day;
+                                var info = r.Cells.TryGetValue(day, out var c) ? c : null;
+                                var classes = CellClass(r.Cells, day)
+                                + (IsToday(dt) ? " today" : "");
+
+                                <td class="@classes" title="@(info is not null ? Tooltip(info) : string.Empty)">
+                                    <span class="daynum">@day</span>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="small mt-2 d-flex flex-wrap gap-2">
+        <span class="legend vac">Vacaciones</span>
+        <span class="legend sick">Enfermedad</span>
+        <span class="legend perm">Permiso</span>
+        <span class="legend move">Mudanza</span>
+        <span class="legend exam">Examen</span>
+        <span class="legend mater">Maternidad/Paternidad</span>
+        <span class="legend course">Capacitación</span>
+        <span class="legend family">Atención familiar</span>
+        <span class="legend incap">Incapacidad</span>
+        <span class="legend don">Donación de sangre</span>
+    </div>
+
+</div>
+
+
+@code {
+    private bool ShowWeekends { get; set; } = true;
+    private bool ShowHolidays { get; set; } = true;
+    private int year = DateTime.Now.Year;
+    private int month = DateTime.Now.Month;
+    private List<Row> rows = new();
+    private IEnumerable<int> Days => Enumerable.Range(1, DateTime.DaysInMonth(year, month));
+    private DateOnly Start => new(year, month, 1);
+    private DateOnly End => new(year, month, DateTime.DaysInMonth(year, month));
+    private HashSet<int> feriadosMMdd = new();
+    private bool EsFeriado(DateOnly d) => feriadosMMdd.Contains(d.Month * 100 + d.Day);
+    private string? selectedEmpleadoId { get; set; }
+    private int? selectedLicenciaId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        CargarFeriados();
+        await LoadDemoData();
+        ExpandRangesToCells();
+    }
+
+    private async Task OnFilterChanged(ChangeEventArgs _)
+    {
+        await LoadDemoData(); 
+        ExpandRangesToCells();
+        StateHasChanged();
+    }
+
+    private Task OnMonthYearChanged()
+    {
+        ExpandRangesToCells(); 
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+
+    private IEnumerable<DateOnly> VisibleDates
+    {
+        get
+        {
+            var d = Start;
+            while (d <= End)
+            {
+                var isWeekend = d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+                if (ShowWeekends || !isWeekend)
+                    yield return d;
+                d = d.AddDays(1);
+            }
+        }
+    }
+
+    private void CargarFeriados()
+    {
+
+        var fechas = _context.BL_FERIADOS_DETALLE
+            .Select(f => f.FECHA) 
+            .ToList();
+
+        feriadosMMdd = fechas
+            .Select(DateOnly.FromDateTime)
+            .Select(d => d.Month * 100 + d.Day)
+            .ToHashSet();
+    }
+
+    private static string DowLetterEs(DayOfWeek dow) => dow switch
+    {
+        DayOfWeek.Monday => "L",
+        DayOfWeek.Tuesday => "M",
+        DayOfWeek.Wednesday => "M",
+        DayOfWeek.Thursday => "J",
+        DayOfWeek.Friday => "V",
+        DayOfWeek.Saturday => "S",
+        DayOfWeek.Sunday => "D",
+        _ => ""
+    };
+
+
+    private static bool IsToday(DateOnly d) => d == DateOnly.FromDateTime(DateTime.Today);
+
+
+    private string CellClass(Dictionary<int, Cell> cells, int day)
+    {
+        var classes = new List<string> { "p-0", "calendar-cell" };
+
+        var dt = new DateOnly(year, month, day);
+        if (ShowWeekends && dt.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
+            classes.Add("wknd");
+
+        if (cells.TryGetValue(day, out var c))
+        {
+            classes.Add(c.Tipo switch
+            {
+                "V" => "vac",     // Vacaciones
+                "E" => "sick",    // Enfermedad
+                "P" => "perm",    // Permiso genérico
+                "DM" => "move",    // Mudanza
+                "EX" => "exam",    // Estudio / examen
+                "MT" => "mater",   // Maternidad/paternidad
+                "CA" => "course",  // Capacitación
+                "AT" => "family",  // Atención familiar
+                "IT" => "incap",   // Incapacidad
+                "DU" => "don",     // Donación sangre
+                _ => "other"
+            });
+            if (c.Estado == "P") classes.Add("pending");
+            if (c.Estado == "R") classes.Add("rejected");
+        }
+        else
+        {
+            if (ShowHolidays && EsFeriado(dt))
+                classes.Add("holiday");
+        }
+        return string.Join(' ', classes);
+    }
+
+    private async Task LoadDemoData()
+    {
+        using var client = new HttpClient();
+        const string url = "https://raw.githubusercontent.com/NetCoderX/DatosPrueba/main/empleadosLicencias.json";
+
+        var json = await client.GetStringAsync(url);
+        
+        var empleadoslista = JsonSerializer.Deserialize<List<EmpleadoLicencia>>(json,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            ?? new List<EmpleadoLicencia>();
+
+
+        rows = MapToRows(empleadoslista);
+    }
+
+    #region Lógica de expansión día a día
+    private void ExpandRangesToCells()
+    {
+        foreach (var r in rows)
+        {
+            r.Cells.Clear();
+            foreach (var range in r.Ranges)
+            {
+                var desde = Max(range.Desde, Start);
+                var hasta = Min(range.Hasta, End);
+                for (var d = desde; d <= hasta; d = d.AddDays(1))
+                {
+                    r.Cells[d.Day] = new Cell(range.Tipo, range.Estado, d);
+                }
+            }
+        }
+    }
+    private static DateOnly Max(DateOnly a, DateOnly b) => a > b ? a : b;
+    private static DateOnly Min(DateOnly a, DateOnly b) => a < b ? a : b;
+    #endregion
+
+    #region Presentación
+    private static string Tooltip(Cell c) =>
+        c.Tipo switch
+        {
+            "V" => $"Vacaciones ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "E" => $"Enfermedad ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "P" => $"Permiso ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "MT" => $"Maternidad/Paternidad ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "EX" => $"Examen ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "DM" => $"Día de mudanza ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "DL" => $"Día libre compensatorio ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "CA" => $"Capacitación / Curso ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "AT" => $"Atención familiar ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "IT" => $"Incapacidad transitoria ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "HO" => $"Home Office ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "TR" => $"Trabajo remoto desde otra locación ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "JU" => $"Jurado / Citación judicial ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "DU" => $"Día por donación de sangre ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            "OT" => $"Horas extras compensadas ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}",
+            _ => $"Otro ({EstadoText(c.Estado)}) - {c.Fecha:dd/MM}"
+        };
+
+
+    private static string EstadoText(string e) => e switch
+    {
+        "A" => "Aprobada",
+        "P" => "Pendiente",
+        "R" => "Rechazada",
+        _   => "N/A"
+    };
+
+    private static string MapTipo(int codigo) => codigo switch
+    {
+        1 => "V", // Vacaciones
+        4 => "E", // Enfermedad
+        2 => "DM", // Día de mudanza
+        3 => "EX", // Día de estudio / Examen
+        5 => "MT", // Maternidad/Paternidad
+        6 => "EX", // Examen
+        7 => "CA", // Capacitación
+        8 => "AT", // Atención familiar
+        9 => "IT", // Incapacidad
+        10 => "DU", // Donación de sangre
+        _ => "P"   // Permiso / otros
+    };
+
+    private List<Row> MapToRows(IEnumerable<EmpleadoLicencia> data)
+    {
+        return data
+            .GroupBy(e => $"{e.Nombre} {e.Apellido}".Trim())
+            .Select(g => new Row(
+                empleado: g.Key,
+                ranges: g.Select(e => new LeaveRange(
+                    DateOnly.FromDateTime(e.FechaDesde),
+                    DateOnly.FromDateTime(e.FechaHasta),
+                    MapTipo(e.CodigoLicencia),
+                    "A" // o traé el estado si lo tenés; por ahora Aprobada
+                )).ToList()
+            ))
+            .ToList();
+    }
+
+    #endregion
+
+    #region DTOs
+    private sealed class Row
+    {
+        public string Empleado { get; }
+        public List<LeaveRange> Ranges { get; }
+        public Dictionary<int, Cell> Cells { get; } = new();
+
+        public Row(string empleado, List<LeaveRange> ranges)
+        {
+            Empleado = empleado;
+            Ranges = ranges;
+        }
+    }
+
+    private record LeaveRange(DateOnly Desde, DateOnly Hasta, string Tipo, string Estado);
+    private sealed record Cell(string Tipo, string Estado, DateOnly Fecha);
+    #endregion
+    
+
+    public class EmpleadoLicencia
+    {
+        [JsonPropertyName("nombre")]
+        public string Nombre { get; set; }
+
+        [JsonPropertyName("apellido")]
+        public string Apellido { get; set; }
+
+        [JsonPropertyName("tipoLicencia")]
+        public string TipoLicencia { get; set; }
+
+        [JsonPropertyName("codigoLicencia")]
+        public int CodigoLicencia { get; set; }
+
+        [JsonPropertyName("fechaDesde")]
+        public DateTime FechaDesde { get; set; }
+
+        [JsonPropertyName("fechaHasta")]
+        public DateTime FechaHasta { get; set; }
+    }
+}

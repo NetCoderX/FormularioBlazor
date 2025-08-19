@@ -1,0 +1,154 @@
+﻿.table-responsive {
+    max-height: 70vh;
+}
+
+.calendar {
+    table-layout: fixed;
+    user-select: none;
+}
+
+    .calendar th, .calendar td {
+        min-width: 32px;
+        height: 28px;
+    }
+
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+
+.sticky-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.calendar-cell {
+    transition: outline .1s ease;
+}
+
+    .calendar-cell:hover {
+        outline: 2px solid #999;
+    }
+
+
+    .calendar-cell.wknd {
+        background: #f6f6f6;
+    }
+
+
+    .calendar-cell.vac {
+        background: #ffe0e0;
+        border: 1px solid red;
+    }
+
+    .calendar-cell.sick {
+        background: #e0f0ff;
+        border: 1px solid blue;
+    }
+
+    .calendar-cell.perm {
+        background: #fff6cc;
+    }
+
+    .calendar-cell.other {
+        background: #e9e9e9;
+    }
+
+
+    .calendar-cell.pending {
+        outline: 2px dashed #888;
+    }
+
+    .calendar-cell.rejected {
+        text-decoration: line-through;
+    }
+
+    .calendar-cell.holiday {
+        background: #e9d5ff;
+        border: 1px solid violet;
+    }
+
+
+.legend {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.legend-vac {
+    background: #ffe0e0;
+    border: 1px solid red;
+}
+
+.legend-sick {
+    background: #e0f0ff;
+    border: 1px solid blue;
+}
+
+.legend-perm {
+    background: #fff6cc;
+    border: 1px solid yellow;
+}
+
+.legend-pend {
+    border: 2px dashed #888;
+    padding: 2px 6px;
+}
+
+.legend-rej {
+    text-decoration: line-through;
+    border: 1px solid
+}
+
+.legend-wknd {
+    background: #f6f6f6;
+    border: 1px solid #f6f6f6;
+}
+
+/* violeta claro */
+.legend-holiday {
+    background: #e9d5ff;
+    border: 1px solid violet;
+}
+
+.calendar-cell.vac {
+    background: #ffe6b3;
+}
+/* Vacaciones */
+.calendar-cell.sick {
+    background: #b3e0ff;
+}
+/* Enfermedad */
+.calendar-cell.perm {
+    background: #fff6cc;
+}
+/* Permiso genérico */
+.calendar-cell.move {
+    background: #e0ccff;
+}
+/* Día de mudanza */
+.calendar-cell.exam {
+    background: #d6f5d6;
+}
+/* Estudio / examen */
+.calendar-cell.mater {
+    background: #ffcccc;
+}
+/* Maternidad/paternidad */
+.calendar-cell.course {
+    background: #cce5ff;
+}
+/* Capacitación */
+.calendar-cell.family {
+    background: #f7d6e0;
+}
+/* Atención familiar */
+.calendar-cell.incap {
+    background: #e6e6e6;
+}
+/* Incapacidad */
+.calendar-cell.don {
+    background: #ffd9b3;
+} 
