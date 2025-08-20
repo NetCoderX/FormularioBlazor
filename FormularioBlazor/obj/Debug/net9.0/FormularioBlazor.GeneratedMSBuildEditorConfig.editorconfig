@@ -9,53 +9,57 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FormularioBlazor
 build_property.RootNamespace = FormularioBlazor
-build_property.ProjectDir = d:\BasCoreWeb\FormularioBlazor\FormularioBlazor\
+build_property.ProjectDir = D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = d:\BasCoreWeb\FormularioBlazor\FormularioBlazor
+build_property.MSBuildProjectDirectory = D:\BasCoreWeb\FormularioBlazor\FormularioBlazor
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/App.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Counter.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Error.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/FormulariosBlazor.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Eventos.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFdmVudG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/FormulariosBlazor.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JtdWxhcmlvc0JsYXpvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Home.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Weather.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Routes.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/_Imports.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Layout/MainLayout.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-r2kg690d8s
 
-[d:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Layout/NavMenu.razor]
+[D:/BasCoreWeb/FormularioBlazor/FormularioBlazor/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-5qqdrawgfl

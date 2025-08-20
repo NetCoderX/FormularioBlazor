@@ -76,3 +76,5 @@ D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\obj\Debug\net9.0\refint\Formular
 D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\obj\Debug\net9.0\FormularioBlazor.pdb
 D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\obj\Debug\net9.0\FormularioBlazor.genruntimeconfig.cache
 D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\obj\Debug\net9.0\ref\FormularioBlazor.dll
+D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\obj\Debug\net9.0\FormularioBlazor.sourcelink.json
+D:\BasCoreWeb\FormularioBlazor\FormularioBlazor\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
