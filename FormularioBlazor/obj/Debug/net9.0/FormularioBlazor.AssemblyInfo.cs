@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FormularioBlazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5970c4df51cc10f2f768e49475f9e553d59fd00")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9e36c2c1f9db5460a6ad0b39c742160d530f71b")]
 [assembly: System.Reflection.AssemblyProductAttribute("FormularioBlazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FormularioBlazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
